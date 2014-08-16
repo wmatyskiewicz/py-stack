@@ -4,4 +4,4 @@ python:
   - "pypy"
 
 install: pip install nose
-script:  nosetests
+script:  nosetests -v
