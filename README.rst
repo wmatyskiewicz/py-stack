@@ -19,6 +19,7 @@ Change Log
 Released on 2014-08-16
 
 * Stack to json
+* Dict aggregator
 
 
 0.0.1
