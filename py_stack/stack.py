@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import operator
-
+import json
 
 class Stack(object):
 
@@ -88,3 +88,7 @@ class Stack(object):
             raise Exception('Unsupported type: {}'.format(data_type))
 
         sort_by_type(key, reverse)
+
+    @classmethod
+    def to_json(cls):
+        return json.dumps(cls.stack)

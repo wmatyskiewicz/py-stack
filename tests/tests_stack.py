@@ -154,5 +154,36 @@ class TestStack(unittest.TestCase):
         self.assertEqual(
             context.exception.message, 'All items must be the same type')
 
+    def test_convert_to_json(self):
+        ''' Convert to string '''
+
+        data = [1, 2, 3, 4]
+        Stack.set(data)
+        json_data = Stack.to_json()
+        self.assertEqual(json_data, '[1, 2, 3, 4]')
+
+        data = ['Andrew', 'Bob', 'John']
+        Stack.set(data)
+        json_data = Stack.to_json()
+        self.assertEqual(json_data, '["Andrew", "Bob", "John"]')
+
+        data = [
+            ('Andrew', 'A', 2),
+            ('Bob', 'B', 1),
+            ('John', 'J', 3)
+        ]
+        Stack.set(data)
+        json_data = Stack.to_json()
+        self.assertEqual(json_data, '[["Andrew", "A", 2], ["Bob", "B", 1], ["John", "J", 3]]')  # noqa
+
+        data = [
+            {'name': 'Bob', 'id': 3},
+            {'name': 'Andrew', 'id': 1},
+            {'name': 'John', 'id': 2},
+        ]
+        Stack.set(data)
+        json_data = Stack.to_json()
+        self.assertEqual(json_data, '[{"name": "Bob", "id": 3}, {"name": "Andrew", "id": 1}, {"name": "John", "id": 2}]')  # noqa
+
 if __name__ == '__main__':
     unittest.main()
