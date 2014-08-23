@@ -16,10 +16,11 @@ Change Log
 0.0.2
 ~~~~~
 
-Released on 2014-08-16
+Released on 2014-08-23
 
 * Stack to json
 * Dict aggregator
+* Replace fields in aggregator
 
 
 0.0.1
