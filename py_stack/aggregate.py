@@ -8,8 +8,10 @@ from py_stack.stack import Stack
 class Aggregate(Stack):
 
     @classmethod
-    def _replace(cls, field, item, stack_item, replace_fields=None):
-        if not replace_fields and not field in item.keys() or not item[field]:
+    def _replace(cls, field, item, stack_item, replace_field=None):
+        if not replace_field and not field in item.keys() or not item[field]:
+            item[field] = stack_item[field]
+        elif replace_field in item.keys():
             item[field] = stack_item[field]
         elif type(item.get(field)).__name__ == 'dict':
             old_value = item[field].copy()
@@ -45,7 +47,7 @@ class Aggregate(Stack):
         return merged_data
 
     @classmethod
-    def merge(cls, key):
+    def merge(cls, key, replace_field=None):
         if not isinstance(cls.first(), dict):
             raise Exception('Required list of dicts')
         merged_data = []

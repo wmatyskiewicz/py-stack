@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 import unittest
 
 from py_stack.aggregate import Aggregate
@@ -84,13 +85,66 @@ class TestStack(unittest.TestCase):
 
         Aggregate.set(data)
         merged_data = Aggregate.merge(key='id')
-        self.assertEqual(
-            merged_data[0].get('values'), valid_data[0].get('values')
-        )
-        self.assertEqual(
-            merged_data[1].get('values'), valid_data[1].get('values')
-        )
+        for index in xrange(2):
+            self.assertEqual(
+                merged_data[index].get('values'),
+                valid_data[index].get('values')
+            )
 
+    def test_simple_replace(self):
+        data = [
+            {'id': 1, 'values': 2},
+            {'id': 1, 'values': 3},
+            {'id': 1, 'values': 1},
+            {'id': 3, 'values': 3},
+            {'id': 2, 'values': 2},
+        ]
+        valid_data = [
+            {'id': 1, 'values': 3},
+            {'id': 2, 'values': 2},
+            {'id': 3, 'values': 3},
+        ]
+
+        Aggregate.set(data)
+        Aggregate.sort(key='values')
+        merged_data = Aggregate.merge(key='id', replace_field='values')
+        self.assertEqual(merged_data, valid_data)
+
+    def test_merge_with_update_data(self):
+        data = [
+            {
+                'id': 1,
+                'date': datetime.datetime(2000, 01, 02),
+                'values': {'a': 1, 'c': 3}
+            },
+            {
+                'id': 1,
+                'date': datetime.datetime(2000, 01, 03),
+                'values': {'a': 1, 'b': 2}
+            },
+            {
+                'id': 1,
+                'date': datetime.datetime(2000, 01, 01),
+                'values': {'a': 1, 'b': 2}
+            },
+            {
+                'id': 1,
+                'date': datetime.datetime(2000, 01, 02),
+                'values': {'a': 1, 'b': 2}
+            },
+        ]
+        valid_data = [
+            {
+                'id': 1,
+                'date': datetime.datetime(2000, 01, 03),
+                'values': {'a': 1, 'b': 2, 'c': 3}
+            }
+        ]
+
+        Aggregate.set(data)
+        Aggregate.sort(key='date')
+        merged_data = Aggregate.merge(key='id', replace_field='date')
+        self.assertEqual(merged_data, valid_data)
 
 if __name__ == '__main__':
     unittest.main()

@@ -83,7 +83,7 @@ class Stack(object):
         data_type = cls.check_data_types().__name__
 
         try:
-            sort_by_type = getattr(Stack, '_sort_{}'.format(data_type))
+            sort_by_type = getattr(cls, '_sort_{}'.format(data_type))
         except AttributeError:
             raise Exception('Unsupported type: {}'.format(data_type))
 
